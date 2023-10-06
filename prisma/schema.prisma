@@ -21,7 +21,7 @@ model TokenList {
   contract  String
   logo      String @default("https://ipfs.io/ipfs/Qma38cRCKz4ZeaSsqsG4k75gfog6dNpvjrThPbjvuMkXWE")
 
-  @@unique([symbol, precision, contract])
+  @@unique([symbol, contract])
 }
 
 

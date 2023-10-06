@@ -11,20 +11,34 @@ export class TokenListService {
     return this.prisma.tokenList.findMany();
   }
 
-  async findOne(
-    symbol: string,
-    precision: number,
-    contract: string,
-  ): Promise<TokenList | null> {
+  async findOne(symbol: string, contract: string): Promise<TokenList | null> {
     return this.prisma.tokenList.findUnique({
-      where: { symbol_precision_contract: { symbol, precision, contract } },
+      where: { symbol_contract: { symbol, contract } },
     });
   }
 
+  async getLogo(symbol: string, contract: string): Promise<string | null> {
+    // Implement the logic to fetch the logo by symbol and contract here
+    const token = await this.prisma.tokenList.findUnique({
+      where: {
+        symbol_contract: {
+          symbol,
+          contract,
+        },
+      },
+    });
+    if (!token) {
+      throw new NotFoundException(
+        `Token with symbol ${symbol} and contract ${contract} not found`,
+      );
+    }
+    return token.logo; // Assuming that the token has a 'logo' field
+  }
+
   async create(data: Omit<TokenList, 'id'>): Promise<TokenList> {
-    const { symbol, precision, contract } = data;
+    const { symbol, contract } = data;
     // Check if a token with the same symbol and contract already exists
-    const existingToken = await this.findOne(symbol, precision, contract);
+    const existingToken = await this.findOne(symbol, contract);
 
     if (existingToken) {
       throw new NotFoundException(
@@ -44,7 +58,7 @@ export class TokenListService {
     data: Partial<TokenList>,
   ): Promise<TokenList | null> {
     return this.prisma.tokenList.update({
-      where: { symbol_precision_contract: { symbol, precision, contract } },
+      where: { symbol_contract: { symbol, contract } },
       data,
     });
   }
@@ -55,7 +69,7 @@ export class TokenListService {
     contract: string,
   ): Promise<TokenList | null> {
     return this.prisma.tokenList.delete({
-      where: { symbol_precision_contract: { symbol, precision, contract } },
+      where: { symbol_contract: { symbol, contract } },
     });
   }
 }

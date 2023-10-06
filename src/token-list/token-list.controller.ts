@@ -23,13 +23,26 @@ export class TokenListController {
     return { tokens };
   }
 
-  @Get(':symbol/:precision/:contract')
+  @Get('logo/:symbol/:contract')
+  async getLogo(
+    @Param('symbol') symbol: string,
+    @Param('contract') contract: string,
+  ): Promise<{ logo: string } | null> {
+    // Assuming that you have a method in your service to get the logo by symbol and contract
+    const logo = await this.tokenListService.getLogo(symbol, contract);
+    if (!logo) {
+      return null;
+    }
+    return { logo };
+  }
+
+  @Get(':symbol/:contract')
   findOne(
     @Param('symbol') symbol: string,
     @Param('precision') precision: string,
     @Param('contract') contract: string,
   ): Promise<TokenList | null> {
-    return this.tokenListService.findOne(symbol, +precision, contract);
+    return this.tokenListService.findOne(symbol, contract);
   }
 
   @Post('/add')
