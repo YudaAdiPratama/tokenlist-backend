@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { UserController } from './user/user.controller';
 import { AuthController } from './auth/auth.controller';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [UserModule, AuthModule],
@@ -17,8 +18,9 @@ import { AuthController } from './auth/auth.controller';
     TokenListController,
     UserController,
     AuthController,
+    UserController,
   ],
-  providers: [AppService, TokenListService, PrismaService], // Include PrismaService
+  providers: [AppService, TokenListService, PrismaService, UserService], // Include PrismaService
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
