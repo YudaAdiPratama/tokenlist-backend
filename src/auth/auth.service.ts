@@ -28,7 +28,7 @@ export class AuthService {
   }
   async verifyToken(token: string): Promise<any> {
     try {
-      const decoded = await jwt.verify(token, 'hagsfhjsdgfsdyafays'); // Replace with your secret key
+      const decoded = await jwt.verify(token, process.env.KEY_TOKEN); // Replace with your secret key
       return decoded;
     } catch (error) {
       throw new UnauthorizedException('Token is invalid or expired');
