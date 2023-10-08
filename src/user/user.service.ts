@@ -7,14 +7,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(username: string, password: string) {
-    return this.prisma.user.create({
-      data: {
-        username,
-        password, // Remember to hash the password before saving it
-      },
-    });
-  }
+  // async createUser(username: string, password: string) {
+  //   return this.prisma.user.create({
+  //     data: {
+  //       username,
+  //       password, // Remember to hash the password before saving it
+  //     },
+  //   });
+  // }
 
   async findByUsername(username: string) {
     return this.prisma.user.findUnique({
